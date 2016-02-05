@@ -1,0 +1,33 @@
+{
+  "name": "mocha-xml-validator",
+  "version": "0.0.1",
+  "description": "Shrink-wrapped test tool for XML/DTD packages",
+  "main": "main.js",
+  "bin": {
+    "validate": "./main.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ncbi/mocha-xml-validator.git"
+  },
+  "keywords": [
+    "XML",
+    "DTD",
+    "test",
+    "mocha"
+  ],
+  "author": "NCBI",
+  "license": "SEE LICENSE IN LICENSE.md",
+  "bugs": {
+    "url": "https://github.com/ncbi/mocha-xml-validator/issues"
+  },
+  "homepage": "https://github.com/ncbi/mocha-xml-validator#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "libxmljs-mt": "^0.17.0",
+    "mocha": "^2.4.5"
+  }
+}
