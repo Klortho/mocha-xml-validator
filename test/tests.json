@@ -1,0 +1,47 @@
+{
+  "testCases": [
+    {
+      "filename": "external-subset-cat-bad.xml",
+      "expect": "invalid"
+    },
+    {
+      "filename": "external-subset-cat-good.xml"
+    },
+    {
+      "filename": "external-subset-does-not-exist.xml",
+      "expect": "invalid"
+    },
+    {
+      "filename": "external-subset-nocat-bad.xml",
+      "expect": "invalid"
+    },
+    {
+      "filename": "external-subset-nocat-good.xml"
+    },
+    {
+      "filename": "internal-subset-bad.xml",
+      "expect": "invalid"
+    },
+    {
+      "filename": "internal-subset-good.xml"
+    },
+    {
+      "filename": "no-dtd.xml",
+      "expect": "invalid"
+    },
+    {
+      "filename": "not-well-formed.xml",
+      "expect": "invalid"
+    },
+    {
+      "filename": "xinclude-good.xml",
+      "skip": true,
+      "reason": "XInclude doesn't seem to be working in libxmljs-mt"
+    },
+    {
+      "filename": "idref-errors.xml",
+      "errorsAllowed": [ "IDREF" ]
+    }
+
+  ]
+}

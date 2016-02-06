@@ -1,3 +1,5 @@
+# mocha-xml-validator
+
 This is a validation tool for XML files and their DTDs.
 
 It's an integrated package that uses mocha to run tests that are
@@ -27,19 +29,23 @@ in the format illustrated by this example.
     { "filename": "test-2.xml",
       "errorsAllowed": [ "IDREF" ] },
 
-    { "filename": "skip-1.xml" }
+    { "filename": "skip-1.xml" },
     { "filename": "skip-2.xml",
       "skip": true,
       "reason": "Need to skip this one for now." },
     { "filename": "skip-3.xml",
       "skip": true,
-      "reason": "#reason-code-3" },
+      "reason": "#reason-code-3" }
   ],
   "reasonCodes": {
-    "reason-code-3": "A bunch of files need to be skipped for now.",
+    "reason-code-3": "A bunch of files need to be skipped for now."
   }
 }
 ```
+
+**Note that the JSON format is very finicky. We suggest that you use the
+online [jsonlint tool](http://jsonlint.com/) to check your JSON file,
+if you are having problems.**
 
 Each entry in the `testCases` array is run as a separate test.
 
@@ -68,9 +74,27 @@ Finally, to run the tests:
 npm test
 ```
 
-# To-do
+
+## To-do
 
 * Allow users to integrate this into an existing mocha test suite
 
 
+## Problems
 
+### XInclude is not working
+
+The Tag Library sources use XInclude, and it would
+be nice to be able to validate with that, but not essential.
+
+I think there is a bug in the library we're using,
+[libxmljs-mt](https://www.npmjs.com/package/libxmljs-mt). I even tried
+to fix it, [here](https://github.com/Klortho/libxmljs/commit/f0164f89cfefb17963cc739e6b20b9ae91d9418d),
+but it did not work. See also the file try-xinclude.js.
+
+Note that the XInclude problem has nothing to do with validation: the
+\<xi:include> elements are just not getting expanded. But, assuming we
+were able to get that working, there might be another problem. In order
+to validate files that use xinclude, in xmllint, for example, you have
+to give it the `--postvalid` argument, to ensure that validation happens
+after all the expansions. I don't see that option in libxmljs-mt.

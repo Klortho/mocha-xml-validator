@@ -7,7 +7,7 @@
     "validate": "./main.js"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test/main.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
   "devDependencies": {
     "chai": "^3.5.0",
     "libxmljs-mt": "^0.17.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.4.5",
+    "node-getopt": "^0.2.3"
   }
 }
