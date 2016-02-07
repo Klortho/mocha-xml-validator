@@ -5,7 +5,7 @@ This is a validation tool for XML files and their DTDs.
 It's an integrated package that uses mocha to run tests that are
 defined in a tests.json file -- no coding is required.
 
-To use it, first run:
+To use it, first run this in your Node.js project directory:
 
 ```
 npm install --save-dev mocha-xml-validator
@@ -15,12 +15,13 @@ Then, add this to your package.json:
 
 ```json
 "scripts": {
-  "test": "validate test/tests.json"
+  "test": "nxt-validate"
 },
 ```
 
 Next, create a test directory, and a tests.json file within that,
-in the format illustrated by this example.
+in the format illustrated by this example. Each entry in `testCases`
+specifies an XML file that will be run through the validator.
 
 ```json
 {
@@ -84,7 +85,18 @@ for an explanation.
 
 ## To-do
 
+* Add self-tests for the various command-line options.
 * Allow users to integrate this into an existing mocha test suite
+* Some better grouping mechanism (already needed this for w3c-schema-dtd):
+    * Catalog could be specified inside the tests.json file: one catalog / 
+      json file seems like a good rule
+    * But, need a way to specify multiple tests.json files (command line), 
+      and each should run as a separate test suite within the same runner.
+* Right now, if there is something wrong with the user's tests.json
+  file, or some other configuration error, then this produces a
+  *mocha test* failure. Not sure if that's right -- maybe it should error
+  out before going into mocha-mode, with a clear error message.
+  (The mocha errors can be daunting.)
 
 
 ### XInclude is not working

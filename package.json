@@ -4,7 +4,7 @@
   "description": "Shrink-wrapped test tool for XML/DTD packages",
   "main": "main.js",
   "bin": {
-    "validate": "./main.js"
+    "nxt-validate": "./main.js"
   },
   "scripts": {
     "test": "node test/main.js"

@@ -7,13 +7,14 @@ var assert = chai.assert;
 
 // Get the test cases, and some options, from main
 var main = require('./main');
-var testsDir = main.testsDir,
+var baseDir = main.baseDir,
+    testsDir = main.testsDir,
     tests = main.tests,
-    catalogPath = main.catalogPath,
-    configError = main.configError;
+    catalogPath = main.catalogPath;
 
 /*
 console.log("----------------------\n");
+console.log("baseDir: ", baseDir);
 console.log("testsDir: ", testsDir);
 console.log("tests: ", tests);
 console.log("catalogPath: ", catalogPath);
@@ -21,27 +22,14 @@ console.log("configError: ", configError);
 */
 process.env.XML_CATALOG_FILES = catalogPath;
 
-it('Parent project should not have any configuration problems',
-  function(done) {
-    var okay = (configError == null),
-        msg = okay ? '' : configError.toString();
-    assert(okay, msg);
-    done();
-  }
-);
-
-if (!configError) {
-  var testCases = tests.testCases;
-
-  testCases.forEach(function(testCase) {
-    (testCase.skip ? it.skip : it)(
-      `${testCase.filename} should give expected results from validation`,
-      function() {
-        return testOne(testCase);
-      }
-    );
-  });
-}
+tests.testCases.forEach(function(testCase) {
+  (testCase.skip ? it.skip : it)(
+    `${testCase.filename} should give expected results from validation`,
+    function() {
+      return testOne(testCase);
+    }
+  );
+});
 
 // Use this inside a promise function to get the function to call
 // when you need to reject.
@@ -60,7 +48,6 @@ function rejector(testCase, reject) {
 function testOne(testCase) {
   return new Promise(function(resolve, _reject) {
     var reject = rejector(testCase, _reject);
-
     var expect = testCase.expect || 'valid';
     return validate(testCase)
       .then(
@@ -84,7 +71,6 @@ function testOne(testCase) {
 function validate(testCase) {
   return new Promise(function(resolve, _reject) {
     var reject = rejector(testCase, _reject);
-
     var xmlPath = path.join(testsDir, testCase.filename);
     fs.readFile(xmlPath, function (error, data) {
       if (error) reject(error);
@@ -127,4 +113,3 @@ function badErrors(testCase, doc) {
   });
   return _badErrors.length > 0 ? _badErrors : false;
 }
-
