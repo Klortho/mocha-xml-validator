@@ -1,6 +1,6 @@
 var chai = require('chai'),
     fs = require('fs'),
-    libxml = require("libxmljs-mt"),
+    libxml = require("libxmljs-cfm"),
     path = require('path');
 
 var assert = chai.assert;

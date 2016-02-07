@@ -74,13 +74,18 @@ Finally, to run the tests:
 npm test
 ```
 
+## XML processing
+
+This uses a fork of [libxmljs](https://www.npmjs.com/package/libxmljs); 
+[klortho/libxmljs](https://github.com/klortho/libxmljs). See
+[this pull request](https://github.com/gagern/libxmljs/pull/7) 
+for an explanation.
+
 
 ## To-do
 
 * Allow users to integrate this into an existing mocha test suite
 
-
-## Problems
 
 ### XInclude is not working
 
@@ -89,7 +94,8 @@ be nice to be able to validate with that, but not essential.
 
 I think there is a bug in the library we're using,
 [libxmljs-mt](https://www.npmjs.com/package/libxmljs-mt). I even tried
-to fix it, [here](https://github.com/Klortho/libxmljs/commit/f0164f89cfefb17963cc739e6b20b9ae91d9418d),
+to fix it, [here](https://github.com/Klortho/libxmljs/commit/f0164f89cfefb17963cc739e6b20b9ae91d9418d)
+(included in my [pull request](https://github.com/gagern/libxmljs/pull/7))
 but it did not work. See also the file try-xinclude.js.
 
 Note that the XInclude problem has nothing to do with validation: the
