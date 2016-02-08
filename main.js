@@ -127,20 +127,18 @@ TestSet.prototype.newSuite = function(_opts) {
 TestSet.prototype.run = function() {
   var testSet = this;
 
-  return runSuite(testSet.suites[0]);
-
   // Run the test suites sequentially. This is needed because it
   // uses process.env.XML_CATALOG_FILES, which is global.
   // For a description of this pattern of using Promises with reduce, see
   // http://www.html5rocks.com/en/tutorials/es6/promises/#toc-creating-sequences
-  //return testSet.suites.reduce(
-  //  function(sequence, suite) {
-  //    return sequence.then(function() {
-  //      return runSuite(suite);
-  //    });
-  //  },
-  //  Promise.resolve()
-  //);
+  return testSet.suites.reduce(
+    function(sequence, suite) {
+      return sequence.then(function() {
+        return runSuite(suite);
+      });
+    },
+    Promise.resolve()
+  );
 };
 
 // Run one suite. This returns a promise that will either
