@@ -116,18 +116,15 @@ for an explanation.
 
 ## To-do
 
-* Add unit tests for the various command-line options.
-* Allow users to integrate this into an existing mocha test suite
-* Some better grouping mechanism (already needed this for w3c-schema-dtd):
+* Add unit tests for some more of the command-line options (reporter and
+  baseDir)
+* Add ability to declaratively create multiple test suites.
+  (We already needed this for w3c-schema-dtd.) Ideas:
     * Catalog could be specified inside the tests.json file: one catalog /
       json file seems like a good rule
-    * But, need a way to specify multiple tests.json files (command line),
-      and each should run as a separate test suite within the same runner.
-* Right now, if there is something wrong with the user's tests.json
-  file, or some other configuration error, then this produces a
-  *mocha test* failure. Not sure if that's right -- maybe it should error
-  out before going into mocha-mode, with a clear error message.
-  (The mocha errors can be daunting.)
+    * Need a way to specify multiple tests.json files. Either the command
+      line, an inclusion mechanism, or maybe just allow one "master file".
+* Cleaner reporting of validation errors
 
 
 ### XInclude is not working

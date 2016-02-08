@@ -30,11 +30,6 @@
       "expect": "invalid"
     },
     {
-      "filename": "xinclude-good.xml",
-      "skip": true,
-      "reason": "XInclude doesn't seem to be working in libxmljs-mt"
-    },
-    {
       "filename": "idref-errors.xml",
       "errorsAllowed": [ "IDREF" ]
     }

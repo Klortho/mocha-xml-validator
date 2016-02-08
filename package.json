@@ -27,7 +27,7 @@
   "homepage": "https://github.com/ncbi/mocha-xml-validator#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "libxmljs-mt": "0.17.0",
+    "libxmljs-cfm": "0.17.2-dev",
     "mocha": "^2.4.5",
     "node-getopt": "^0.2.3"
   },

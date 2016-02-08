@@ -26,6 +26,3 @@ fs.readFile(xmlPath, function (error, data) {
   }
   console.log('okay');
 });
-
-
-

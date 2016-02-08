@@ -4,7 +4,7 @@
 var _ = require('lodash');
 var chai = require('chai');
 var fs = require('fs');
-var libxml = require("libxmljs-mt");
+var libxml = require("libxmljs-cfm");
 var Mocha = require('mocha');
 var path = require('path');
 var program = require('commander');
@@ -49,8 +49,8 @@ function TestSet(_opts) {
 exports.TestSet = TestSet;
 
 // Create a new test suite based on the options, and push it onto
-// this TestSets suites list. This doesn't return anything, but
-// might throw an Error.
+// this TestSets suites list. This returns the TestSet object, so that these
+// calls can be daisy-chained. Might throw an Error.
 TestSet.prototype.newSuite = function(_opts) {
   var testSet = this;
   var suiteOptDefaults = _.pick(defaults, suiteOpts);
@@ -120,6 +120,9 @@ TestSet.prototype.newSuite = function(_opts) {
       error.message;
     throw error;
   }
+
+  console.log("returning testSet");
+  return testSet;
 };
 
 // Run the test set. This returns a promise that will either
@@ -237,8 +240,7 @@ function generator(suite) {
           var doc = libxml.Document.fromXml(data, {
             dtdvalid: true,
             nonet: true,
-            // FIXME: set to null for testing
-            baseUrl: null,
+            baseUrl: xmlPath,
             //xinclude: true,   #=> not working in libxmljs-mt
           });
         }
