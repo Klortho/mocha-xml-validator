@@ -4,7 +4,7 @@
 var _ = require('lodash');
 var chai = require('chai');
 var fs = require('fs');
-var libxml = require("libxmljs-cfm");
+var libxml = require("libxmljs-mt");
 var Mocha = require('mocha');
 var path = require('path');
 var program = require('commander');
@@ -237,7 +237,8 @@ function generator(suite) {
           var doc = libxml.Document.fromXml(data, {
             dtdvalid: true,
             nonet: true,
-            baseUrl: xmlPath,
+            // FIXME: set to null for testing
+            baseUrl: null,
             //xinclude: true,   #=> not working in libxmljs-mt
           });
         }
