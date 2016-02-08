@@ -15,7 +15,7 @@ Then, add this to your package.json:
 
 ```json
 "scripts": {
-  "test": "nxt-validate"
+  "test": "mxv-validate"
 },
 ```
 
@@ -75,6 +75,35 @@ Finally, to run the tests:
 npm test
 ```
 
+You can also run this tool directly from the command line, if you
+install it globally:
+
+```
+npm install -g mocha-xml-validator
+```
+
+Then, run `mxv-validate --help` to get information about the available
+command-line options.
+
+## Running programmatically
+
+To run from within a Node script:
+
+```
+var mxv = require('mocha-xml-validator');
+
+// Generate a single test suite and run immediately:
+mxv.run();      // Get options from command line, and run
+mxv.run(opts);  // Pass in options (command-line not used), and run
+
+// Or, generate test suites separately, and then run
+var testSet = new mxv.TestSet();
+testSet.newSuite(someOpts);
+testSet.newSuite(otherOpts);
+testSet.run();
+```
+
+
 ## XML processing
 
 This uses a fork of [libxmljs](https://www.npmjs.com/package/libxmljs); 
@@ -85,7 +114,7 @@ for an explanation.
 
 ## To-do
 
-* Add self-tests for the various command-line options.
+* Add unit tests for the various command-line options.
 * Allow users to integrate this into an existing mocha test suite
 * Some better grouping mechanism (already needed this for w3c-schema-dtd):
     * Catalog could be specified inside the tests.json file: one catalog / 
