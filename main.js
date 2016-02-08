@@ -276,3 +276,17 @@ function badErrors(testCase, doc) {
   return _badErrors.length > 0 ? _badErrors : false;
 }
 
+// If we are the main script
+if (!module.parent) {
+  run(commandLineOpts(defaults))
+  .then(
+    function(failures) {
+      console.log('Run completed with ' + failures + ' failures');
+      process.exit(failures);
+    },
+    function(errors) {
+      console.log('Error found, ' + errors);
+      process.exit(1);
+    }
+  );
+}

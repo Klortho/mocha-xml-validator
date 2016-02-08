@@ -93,10 +93,9 @@ To run from within a Node script:
 var mxv = require('mocha-xml-validator');
 
 // Generate a single test suite and run immediately:
-mxv.run();      // Get options from command line, and run
-mxv.run(opts);  // Pass in options (command-line not used), and run
+mxv.run(opts);    // Pass in options, and run
 
-// Or, generate test suites separately, and then run
+// Or, generate multiple test suites separately, and then run
 var testSet = new mxv.TestSet(setOpts);
 testSet.newSuite(suiteOpts_1);
 testSet.newSuite(suiteOpts_2);
@@ -104,14 +103,14 @@ testSet.run();
 ```
 
 Some options (right now, only `reporter`) apply to sets as a whole,
-and others can be per-suite.
+and others are per-suite.
 
 
 ## XML processing
 
-This uses a fork of [libxmljs](https://www.npmjs.com/package/libxmljs); 
+This uses a fork of [libxmljs](https://www.npmjs.com/package/libxmljs);
 [klortho/libxmljs](https://github.com/klortho/libxmljs). See
-[this pull request](https://github.com/gagern/libxmljs/pull/7) 
+[this pull request](https://github.com/gagern/libxmljs/pull/7)
 for an explanation.
 
 
@@ -120,9 +119,9 @@ for an explanation.
 * Add unit tests for the various command-line options.
 * Allow users to integrate this into an existing mocha test suite
 * Some better grouping mechanism (already needed this for w3c-schema-dtd):
-    * Catalog could be specified inside the tests.json file: one catalog / 
+    * Catalog could be specified inside the tests.json file: one catalog /
       json file seems like a good rule
-    * But, need a way to specify multiple tests.json files (command line), 
+    * But, need a way to specify multiple tests.json files (command line),
       and each should run as a separate test suite within the same runner.
 * Right now, if there is something wrong with the user's tests.json
   file, or some other configuration error, then this produces a

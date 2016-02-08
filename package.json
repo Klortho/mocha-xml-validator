@@ -4,7 +4,7 @@
   "description": "Shrink-wrapped test tool for XML/DTD packages",
   "main": "main.js",
   "bin": {
-    "mxv-validate": "./validate.js"
+    "mxv-validate": "./main.js"
   },
   "scripts": {
     "test": "test/test.sh"
