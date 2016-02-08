@@ -97,11 +97,14 @@ mxv.run();      // Get options from command line, and run
 mxv.run(opts);  // Pass in options (command-line not used), and run
 
 // Or, generate test suites separately, and then run
-var testSet = new mxv.TestSet();
-testSet.newSuite(someOpts);
-testSet.newSuite(otherOpts);
+var testSet = new mxv.TestSet(setOpts);
+testSet.newSuite(suiteOpts_1);
+testSet.newSuite(suiteOpts_2);
 testSet.run();
 ```
+
+Some options (right now, only `reporter`) apply to sets as a whole,
+and others can be per-suite.
 
 
 ## XML processing

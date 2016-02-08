@@ -7,7 +7,7 @@
     "mxv-validate": "./validate.js"
   },
   "scripts": {
-    "test": "node test/main.js"
+    "test": "test/test.sh"
   },
   "repository": {
     "type": "git",

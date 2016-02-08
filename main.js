@@ -16,43 +16,56 @@ var assert = chai.assert;
 // run from an npm script, which is our primary use case) unless given
 // an input option to override it (tbd).
 var defaults = {
+  reporter: 'nyan',
   tests: 'test/tests.json',
   catalog: 'catalog.xml',
-  reporter: 'nyan',
   baseDir: process.cwd(),
 };
+var setOpts = ['reporter'];
+var suiteOpts = ['tests', 'catalog', 'baseDir'];
 
 // Exported run function. Creates a new TestSuite and runs
 // immediately. Returns a promise that will either resolve with
 // the number of failures, or reject with an Error.
-function run(opts) {
-  var testSet = new TestSet();
-  var clopts = commandLineOpts(defaults);
-  testSet.newSuite(opts || clopts);
-
+function run(_opts) {
+  var opts = _opts || commandLineOpts(defaults)
+  var testSet = new TestSet(opts);
+  testSet.newSuite(opts);
   return testSet.run();
 }
 exports.run = run;
 
 // Constructor for a TestSet, each of which can have many suites.
-function TestSet() {
+function TestSet(_opts) {
+  var setOptDefaults = _.pick(defaults, setOpts);
+  var opts = _.merge({}, setOptDefaults, _opts);
+  // Instantiate a test runner.
+  // See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
+  this.mocha = new Mocha({
+    reporter: Mocha.reporters[opts.reporter],
+  });
   this.suites = [];
 }
+exports.TestSet = TestSet;
 
 // Create a new test suite based on the options, and push it onto
 // this TestSets suites list. This doesn't return anything, but
 // might throw an Error.
 TestSet.prototype.newSuite = function(_opts) {
   var testSet = this;
-  var suite = _.merge({}, defaults, _opts);
-  testSet.suites.push(suite);
+  var suiteOptDefaults = _.pick(defaults, suiteOpts);
+  var suite = _.merge({}, suiteOptDefaults, _opts);
   if (suite.catalog == 'NONE') suite.catalog = null;
 
   // Keep it simple: every property is also a local variable,
   // and vice-versa
+  var suites = suite.suites = testSet.suites;
+  var suiteNum = suite.suiteNum = suites.length;
+  suites.push(suite);
+
+  var mocha = suite.mocha = testSet.mocha;
   var tests = suite.tests;
   var catalog = suite.catalog;
-  var reporter = suite.reporter;
   var baseDir = suite.baseDir;
 
   var testsPath = suite.testsPath = path.join(baseDir, tests);
@@ -81,39 +94,26 @@ TestSet.prototype.newSuite = function(_opts) {
   // the tests definition file are relative to the directory of that file
   var testsDir = suite.testsDir = path.dirname(testsPath);
 
-  // Instantiate a test runner.
-  // See https://github.com/mochajs/mocha/wiki/Using-mocha-programmatically
-  var mocha = suite.mocha = new Mocha({
-    reporter: Mocha.reporters[reporter],
-  });
-
   // Override the loadFiles method, to use our generator to define
   // tests. This is necessary because the original uses `require`, which
   // would only run generator once. Original code is here:
   // https://github.com/mochajs/mocha/blob/d811eb96/lib/mocha.js#L213
   // We know this will only get invoked with our 'dummy' file,
-  // so we don't need to use the filename
-  //suite.filesLoaded = false;
-  mocha.loadFiles = function() {
-    // Make sure this only gets called once
-    //console.log("===> loadFiles, filesLoaded = ", suite.filesLoaded);
-    //if (suite.filesLoaded) return;
-    //suite.filesLoaded = true;
-
+  // so we don't need to use the filenames.
+  mocha.loadFiles = function(fn) {
     var self = this;
     var _suite = this.suite;
-    _suite.emit('pre-require', global, __filename, self);
-    _suite.emit('require', generator(suite), __filename, self);
-    _suite.emit('post-require', global, __filename, self);
+    suites.forEach(function(suite) {
+      _suite.emit('pre-require', global, __filename, self);
+      _suite.emit('require', generator(suite), __filename, self);
+      _suite.emit('post-require', global, __filename, self);
+    });
   };
 
   // addFile will cause loadFiles to be called, which will in turn
   // call the generator.
   try {
     mocha.addFile('dummy');
-    // Try this: calling loadFiles now, because otherwise it's
-    // delayed until run()
-    //mocha.loadFiles();
   }
   catch(error) {
     error.message = 'Error adding test generator to mocha runner. ' +
@@ -122,36 +122,16 @@ TestSet.prototype.newSuite = function(_opts) {
   }
 };
 
-// Run the entire test set. This returns a promise that will either
+// Run the test set. This returns a promise that will either
 // resolve with the number of failures, or reject with an Error.
 TestSet.prototype.run = function() {
   var testSet = this;
+  var mocha = testSet.mocha;
 
-  // Run the test suites sequentially. This is needed because it
-  // uses process.env.XML_CATALOG_FILES, which is global.
-  // For a description of this pattern of using Promises with reduce, see
-  // http://www.html5rocks.com/en/tutorials/es6/promises/#toc-creating-sequences
-  return testSet.suites.reduce(
-    function(sequence, suite) {
-      return sequence.then(function() {
-        return runSuite(suite);
-      });
-    },
-    Promise.resolve()
-  );
-};
-
-// Run one suite. This returns a promise that will either
-// resolve with the number of failures, or reject with an Error.
-function runSuite(suite) {
   return new Promise(function(resolve, reject) {
     try {
-      // FIXME: I think this sets this globally, preventing running
-      // suites in parallel.
-      process.env.XML_CATALOG_FILES = suite.catalogPath;
-
       // Run the tests
-      suite.mocha.run(function(failures) {
+      mocha.run(function(failures) {
         resolve(failures);
       });
     }
@@ -187,15 +167,17 @@ function commandLineOpts(d) {
 // various mocha functions like `it` and `describe` are in scope inside
 // this function. This will throw an exception of something bad happens.
 function generator(suite) {
-  //console.log("testsData: ", suite.testsData);
-  suite.testsData.testCases.forEach(function(testCase) {
-    testCase.errors = [];
-    (testCase.skip ? it.skip : it)(
-      `${testCase.filename} should give expected results from validation`,
-      function() {
-        return testOne(testCase);
-      }
-    );
+  var suiteName = `Test suite ${suite.suiteNum}`;
+  describe('Test suite ' + suite.suiteNum, function() {
+    suite.testsData.testCases.forEach(function(testCase) {
+      testCase.errors = [];
+      (testCase.skip ? it.skip : it)(
+        `${testCase.filename} should give expected results from validation`,
+        function() {
+          return testOne(testCase);
+        }
+      );
+    });
   });
 
   // This run one test case, and is executed by Mocha. It checks
@@ -249,6 +231,9 @@ function generator(suite) {
         // the baseUrl parameter, and it was much easier to hack it
         // into the syncronous function.
         try {
+          // FIXME: I think this sets this globally, preventing running
+          // suites in parallel.
+          process.env.XML_CATALOG_FILES = suite.catalogPath;
           var doc = libxml.Document.fromXml(data, {
             dtdvalid: true,
             nonet: true,
