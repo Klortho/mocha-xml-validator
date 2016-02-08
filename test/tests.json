@@ -1,10 +1,6 @@
 {
   "testCases": [
     {
-      "filename": "external-subset-cat-bad.xml",
-      "expect": "invalid"
-    },
-    {
       "filename": "external-subset-cat-good.xml"
     },
     {
@@ -42,6 +38,5 @@
       "filename": "idref-errors.xml",
       "errorsAllowed": [ "IDREF" ]
     }
-
   ]
 }

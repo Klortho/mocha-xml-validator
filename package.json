@@ -4,7 +4,7 @@
   "description": "Shrink-wrapped test tool for XML/DTD packages",
   "main": "main.js",
   "bin": {
-    "nxt-validate": "./main.js"
+    "mxv-validate": "./validate.js"
   },
   "scripts": {
     "test": "node test/main.js"
@@ -30,5 +30,11 @@
     "libxmljs-cfm": "0.17.2-dev",
     "mocha": "^2.4.5",
     "node-getopt": "^0.2.3"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "lodash": "^4.2.1",
+    "proxyquire": "^1.7.4",
+    "use-strict": "^1.0.1"
   }
 }
