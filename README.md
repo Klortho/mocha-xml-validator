@@ -116,6 +116,8 @@ for an explanation.
 
 ## To-do
 
+* As mentioned above, this is using a fork of libmxljs. Whenever that PR
+  gets pulled and released, switch to that version.
 * Add unit tests for some more of the command-line options (reporter and
   baseDir)
 * Add ability to declaratively create multiple test suites.
