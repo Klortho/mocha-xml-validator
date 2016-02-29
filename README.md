@@ -106,12 +106,11 @@ Some options (right now, only `reporter`) apply to sets as a whole,
 and others are per-suite.
 
 
-## XML processing
+## XML processing - libxmljs
 
 This uses a fork of [libxmljs](https://www.npmjs.com/package/libxmljs);
 [klortho/libxmljs](https://github.com/klortho/libxmljs). See
-[this pull request](https://github.com/gagern/libxmljs/pull/7)
-for an explanation.
+[this pull request](https://github.com/polotek/libxmljs/pull/388).
 
 
 ## To-do

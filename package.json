@@ -1,6 +1,6 @@
 {
   "name": "mocha-xml-validator",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Shrink-wrapped test tool for XML/DTD packages",
   "main": "main.js",
   "bin": {
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ncbi/mocha-xml-validator.git"
+    "url": "git+https://github.com/klortho/mocha-xml-validator.git"
   },
   "keywords": [
     "XML",
@@ -22,16 +22,16 @@
   "author": "NCBI",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
-    "url": "https://github.com/ncbi/mocha-xml-validator/issues"
+    "url": "https://github.com/klortho/mocha-xml-validator/issues"
   },
-  "homepage": "https://github.com/ncbi/mocha-xml-validator#readme",
+  "homepage": "https://github.com/klortho/mocha-xml-validator#readme",
   "devDependencies": {
-    "chai": "^3.5.0",
-    "libxmljs": "0.17.1",
     "mocha": "^2.4.5",
     "node-getopt": "^0.2.3"
   },
   "dependencies": {
+    "@klortho/libxmljs": "0.17.2",
+    "chai": "^3.5.0",
     "commander": "^2.9.0",
     "lodash": "^4.2.1",
     "proxyquire": "^1.7.4",
